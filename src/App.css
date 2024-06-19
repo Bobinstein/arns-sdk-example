@@ -1,38 +1,184 @@
+body {
+  background-color: #282c34;
+  color: white;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+a {
+  color: #6a6d75;
+}
+a:hover {
+  color: pink;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  background-color: #20232a;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.connect-wallet {
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-right: 20px; /* Add space to the right of the button */
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.App-header {
+.connect-wallet:hover {
+  background-color: #21a1f1;
+}
+
+.records-container {
   background-color: #282c34;
-  min-height: 100vh;
+  color: white;
+  padding: 20px;
+  min-height: 100vh; /* Ensure it covers full viewport height */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: flex-start; /* Align content to the start */
+}
+
+.records-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+}
+
+.record-key {
+  background-color: #3b3f46;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.record-key:hover {
+  background-color: #50545b;
+}
+
+.search-bar {
+  width: 40%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #3b3f46;
+  background-color: #3b3f46;
+  color: white;
+  font-size: 16px;
+}
+
+.record-details {
+  text-align: center;
+  margin-top: 10px; /* Reduced margin to reduce empty space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.record-details pre {
+  text-align: left; /* Align text to the left */
+}
+
+.record-txid {
+  margin: 10px 0;
+}
+
+.record-update {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.record-update input {
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #3b3f46;
+  background-color: #3b3f46;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.record-update button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #61dafb;
+  color: #282c34;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.record-update button:hover {
+  background-color: #21a1f1;
+}
+
+.new-record {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.new-record input {
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #3b3f46;
+  background-color: #3b3f46;
+  color: white;
+}
+
+.new-record button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #61dafb;
+  color: #282c34;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.new-record button:hover {
+  background-color: #21a1f1;
+}
+
+.record-details button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3b3f46;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.record-details button:hover {
+  background-color: #50545b;
+}
+
+.loading {
+  font-size: 20px;
+  margin-top: 20px;
 }

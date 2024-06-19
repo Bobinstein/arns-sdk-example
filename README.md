@@ -1,70 +1,257 @@
-# Getting Started with Create React App
+# Ar.io SDK Example Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project serves as a code example to showcase the usage of the Ar.io SDK for interacting with the Arweave ecosystem. It demonstrates how to fetch, display, and manage Arweave Name Tokens (ANTs) and related records.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [SDK Methods](#sdk-methods)
+  - [fetchArNSRecords](#fetcharnsrecords)
+  - [fetchRecordDetails](#fetchrecorddetails)
+  - [setANTRecord](#setantrecord)
+- [Components](#components)
+- [Utils](#utils)
 
-### `yarn start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js (>=v18.0.0)
+- npm or yarn
 
-### `yarn test`
+### Installing the SDK
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To install the Ar.io SDK, run the following command in your project directory:
 
-### `yarn build`
+```
+npm install @ar.io/sdk
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+or
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+yarn add @ar.io/sdk
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `yarn eject`
+### Quick Start in Web Environment
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+In a web environment, you can use the SDK as follows:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+import { ArIO } from '@ar.io/sdk/web';
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+// Initialize the SDK
+const arIO = ArIO.init();
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+// Fetch the list of gateways
+const gateways = await arIO.getGateways();
 
-## Learn More
+console.log(gateways);
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Project Structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The project is organized as follows:
 
-### Code Splitting
+- `src/`
+  - `components/`
+    - `Header.js`: Component for the header and wallet connection.
+    - `RecordsGrid.js`: Component for displaying a grid of ArNS records.
+    - `RecordDetails.js`: Component for displaying details of a selected record.
+    - `Spinner.js`: Component for displaying a loading spinner.
+  - `utils/`
+    - `arweave.js`: Utility functions for interacting with the Arweave network using the Ar.io SDK.
+    - `auth.js`: Utility functions for wallet connection and address handling.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## SDK Methods
 
-### Analyzing the Bundle Size
+### fetchArNSRecords
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Fetch all ArNS records using the Ar.io SDK.
 
-### Making a Progressive Web App
+**Location in the project:** `src/utils/arweave.js`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+import { ArIO } from "@ar.io/sdk/web";
 
-### Advanced Configuration
+/**
+ * Initialize ArIO and fetch all ArNS records.
+ * @returns {Promise<Object>} All ArNS records.
+ */
+export const fetchArNSRecords = async () => {
+  const arIO = ArIO.init();
+  const allRecords = await arIO.getArNSRecords();
+  return allRecords;
+};
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**Example Usage:**
 
-### Deployment
+```
+useEffect(() => {
+  const fetchRecords = async () => {
+    const allRecords = await fetchArNSRecords();
+    setArnsRecords(allRecords);
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+  fetchRecords();
+}, []);
+```
 
-### `yarn build` fails to minify
+**Example Output:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+{
+  "example": {
+    "contractTxId": "txId1",
+    "endTimestamp": 1741724018,
+    "purchasePrice": 7965293441,
+    "startTimestamp": 1710188018,
+    "type": "lease",
+    "undernames": 10
+  },
+  "another": {
+    "contractTxId": "txId2",
+    "endTimestamp": 1715665687,
+    "purchasePrice": 124565540,
+    "startTimestamp": 1694101828,
+    "type": "lease",
+    "undernames": 100
+  }
+}
+```
+
+### fetchRecordDetails
+
+Fetch detailed records, owner, and controllers for a given contractTxId using the Ar.io SDK.
+
+**Location in the project:** `src/utils/arweave.js`
+
+```
+import { ANT } from "@ar.io/sdk/web";
+
+/**
+ * Fetch detailed records, owner, and controllers for a given contractTxId.
+ * @param {string} contractTxId - The contract transaction ID.
+ * @returns {Promise<Object>} Detailed records, owner, and controllers.
+ */
+export const fetchRecordDetails = async (contractTxId) => {
+  const ant = ANT.init({ contractTxId });
+  const detailedRecords = await ant.getRecords();
+  const owner = await ant.getOwner();
+  const controllers = await ant.getControllers();
+  return { detailedRecords, owner, controllers };
+};
+```
+
+**Example Usage:**
+
+```
+const handleKeyClick = async (key) => {
+  const record = arnsRecords[key];
+  if (record && record.contractTxId) {
+    const { detailedRecords, owner, controllers } = await fetchRecordDetails(
+      record.contractTxId
+    );
+    setSelectedRecord({
+      key,
+      records: detailedRecords,
+      contractTxId: record.contractTxId,
+    });
+    setOwner(owner);
+    setControllers(Array.isArray(controllers) ? controllers : []);
+  }
+};
+```
+
+**Example Output:**
+
+```
+{
+  "detailedRecords": {
+    "@": { "transactionId": "txId3", "ttlSeconds": 3600 }
+  },
+  "owner": "ownerAddress",
+  "controllers": ["controller1", "controller2"]
+}
+```
+
+### setANTRecord
+
+Set a new record in the ANT contract using the Ar.io SDK.
+
+**Location in the project:** `src/utils/arweave.js`
+
+```
+import { ANT, ArconnectSigner } from "@ar.io/sdk/web";
+
+/**
+ * Set a new record in the ANT contract.
+ * @param {string} contractTxId - The contract transaction ID.
+ * @param {string} subDomain - The subdomain for the record.
+ * @param {string} transactionId - The transaction ID the record should resolve to.
+ * @param {number} ttlSeconds - The Time To Live (TTL) in seconds.
+ * @returns {Promise<Object>} Result of the record update.
+ */
+export const setANTRecord = async (contractTxId, subDomain, transactionId, ttlSeconds) => {
+  const browserSigner = new ArconnectSigner(window.arweaveWallet);
+  const ant = ANT.init({ contractTxId, signer: browserSigner });
+  const result = await ant.setRecord({ subDomain, transactionId, ttlSeconds });
+  return result;
+};
+```
+
+**Example Usage:**
+
+```
+const handleUpdateRecord = async (subDomain, newTxId) => {
+  if (!subDomain.trim()) {
+    setResultMessage("Subdomain cannot be empty.");
+    return;
+  }
+  setIsProcessing(true);
+  try {
+    const result = await setANTRecord(
+      selectedRecord.contractTxId,
+      subDomain,
+      newTxId || "UyC5P5qKPZaltMmmZAWdakhlDXsBF6qmyrbWYFchRTk",
+      900
+    );
+    setResultMessage(
+      `Record updated with TxId ${result.id}. Please allow up to 30 minutes for transaction to settle.`
+    );
+  } catch (error) {
+    setResultMessage("Failed to update record. Please try again.");
+  } finally {
+    setIsProcessing(false);
+  }
+};
+```
+
+**Example Output:**
+
+```
+{
+  "format": 2,
+  "id": "q_neciTNBsPMq7LQ-uF0p5FJJTtDUU0yLpOQ_Tz-yf4",
+  "last_tx": "RDDWJ58aG7jUPeXOSeCWklLuYGWxGP9TWxhT3kCscGcmdmQgGYAVmxr_BHgjOH8t",
+  "owner": "kl8stGDQ8qfZqkFJu7fBvCyKvII1Bd5hyczp0G-rZnDEZxsj-5esz6-mnu9E7p53nAdx-xF_FMhy6MIjPGsQYTuj_yVXOVlXe1gPqCfQwXsZaYx_fPDuXYTrYqWV3XA1cGTNdhnT-kXpoPiwudga3KCvlHgRFdSnu28r9H1JVn4EuNzC7CHAVsky3LhkR3e9I-fxaVjZNN-SImouEqN9-Txbrc2nnRGkPu36y1RMfoBAhucEkxj_jNTmDrBf0apYvAHWr_ljct26Ykzc0T-xItFTg8t3rBxd7Pj2MX6Nl7pvMJde8FbT2au2p-ElVdmA2WMdPZ3xML--5RuFtxznuMarMMfBKsUx50HOB4EtTNxMQTm1k6CYCJDUyr1R9Bb0_CytW1M3XIIw1LxwfuZlHg9ZwoAwyyrxLCFfudj5wvmiY4dqwRk4dAfCC4y1J4ryPwp43Xod1KVWWqLsKQK3XI2l5ye-P-TcyWgMM5xKebdqaouJ9...
+}
+```
+
+## Components
+
+- **Header.js**: Component for displaying the connect wallet button and connected wallet address.
+- **RecordsGrid.js**: Component for displaying a grid of ArNS record keys.
+- **RecordDetails.js**: Component for displaying details of a selected record, including the ability to update records.
+- **Spinner.js**: Component for displaying a loading spinner while processing.
+
+## Utils
+
+- **arweave.js**: Utility functions for interacting with the Arweave network using the Ar.io SDK.
+- **auth.js**: Utility functions for wallet connection and address handling.
+"""
