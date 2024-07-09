@@ -1,31 +1,32 @@
-import { ArIO, ANT, ArconnectSigner } from "@ar.io/sdk/web";
+import { IO, ANT, ArconnectSigner } from "@ar.io/sdk/web";
 
 /**
  * Initialize ArIO and fetch all ArNS records.
  * @returns {Promise<Object>} All ArNS records.
  */
 export const fetchArNSRecords = async () => {
-  const arIO = ArIO.init();
+  const arIO = IO.init();
   const allRecords = await arIO.getArNSRecords();
+  console.log(allRecords)
   return allRecords;
 };
 
 /**
- * Initialize ANT with the given contractTxId.
- * @param {string} contractTxId - The contract transaction ID.
+ * Initialize ANT with the given processId.
+ * @param {string} processId - The processId.
  * @returns {Object} ANT instance.
  */
-export const initANT = (contractTxId) => {
-  return ANT.init({ contractTxId });
+export const initANT = (processId) => {
+  return ANT.init({ processId });
 };
 
 /**
- * Fetch detailed records, owner, and controllers for a given contractTxId.
- * @param {string} contractTxId - The contract transaction ID.
+ * Fetch detailed records, owner, and controllers for a given processId.
+ * @param {string} contractTxId - The processId.
  * @returns {Promise<Object>} Detailed records, owner, and controllers.
  */
-export const fetchRecordDetails = async (contractTxId) => {
-  const ant = initANT(contractTxId);
+export const fetchRecordDetails = async (processId) => {
+  const ant = initANT(processId);
   const detailedRecords = await ant.getRecords();
   const owner = await ant.getOwner();
   const controllers = await ant.getControllers();
@@ -33,16 +34,17 @@ export const fetchRecordDetails = async (contractTxId) => {
 };
 
 /**
- * Set a new record in the ANT contract.
- * @param {string} contractTxId - The contract transaction ID.
+ * Set a new record in the ANT process.
+ * @param {string} processId - The processId.
  * @param {string} subDomain - The subdomain for the record.
  * @param {string} transactionId - The transaction ID the record should resolve to.
  * @param {number} ttlSeconds - The Time To Live (TTL) in seconds.
  * @returns {Promise<Object>} Result of the record update.
  */
-export const setANTRecord = async (contractTxId, subDomain, transactionId, ttlSeconds) => {
+export const setANTRecord = async (processId, name, transactionId, ttlSeconds) => {
   const browserSigner = new ArconnectSigner(window.arweaveWallet);
-  const ant = ANT.init({ contractTxId, signer: browserSigner });
-  const result = await ant.setRecord({ subDomain, transactionId, ttlSeconds });
+  const ant = ANT.init({ processId, signer: browserSigner });
+  const result = await ant.setRecord({ undername: name, transactionId, ttlSeconds });
+  console.log(result)
   return result;
 };

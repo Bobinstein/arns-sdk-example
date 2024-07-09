@@ -59,10 +59,10 @@ function App() {
   // Handle key click to fetch detailed record information
   const handleKeyClick = async (key) => {
     const record = arnsRecords[key];
-    if (record && record.contractTxId) {
+    if (record && record.processId) {
       // Fetch detailed records, owner, and controllers using the ar.io SDK
       const { detailedRecords, owner, controllers } = await fetchRecordDetails(
-        record.contractTxId
+        record.processId
       );
       // Example detailedRecords output: { "@": { transactionId: "txId3", ttlSeconds: 3600 } }
       // Example owner output: "ownerAddress"
@@ -70,7 +70,7 @@ function App() {
       setSelectedRecord({
         key,
         records: detailedRecords,
-        contractTxId: record.contractTxId,
+        processId: record.processId,
       });
       setOwner(owner);
       setControllers(Array.isArray(controllers) ? controllers : []);
@@ -87,7 +87,7 @@ function App() {
     try {
       // Set a new record in the ANT contract using the ar.io SDK
       const result = await setANTRecord(
-        selectedRecord.contractTxId,
+        selectedRecord.processId,
         subDomain,
         newTxId || "UyC5P5qKPZaltMmmZAWdakhlDXsBF6qmyrbWYFchRTk",
         900
@@ -102,9 +102,19 @@ function App() {
       //   data_root: "bHKlUYQ_UplJAkF_ttjbUyENUZUUNNGZUzl9jQpS7Yw",
       // };
 
-      setResultMessage(
-        `Record updated with TxId ${result.id}. Please allow up to 30 minutes for transaction to settle.`
+      // Fetch updated record details
+      const { detailedRecords, owner, controllers } = await fetchRecordDetails(
+        selectedRecord.processId
       );
+      setSelectedRecord({
+        key: selectedRecord.key,
+        records: detailedRecords,
+        processId: selectedRecord.processId,
+      });
+      setOwner(owner);
+      setControllers(Array.isArray(controllers) ? controllers : []);
+
+      setResultMessage(`Record updated with TxId ${result.id}`);
     } catch (error) {
       setResultMessage("Failed to update record. Please try again.");
     } finally {
