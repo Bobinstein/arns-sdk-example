@@ -54,7 +54,7 @@ const RecordDetails = ({
                   placeholder="Enter new TxID"
                   onBlur={(e) => handleUpdateRecord(recordKey === "@" ? selectedRecord.key : `${recordKey}`, e.target.value)}
                 />
-                <button onClick={() => handleUpdateRecord(recordKey === "@" ? selectedRecord.key : `${recordKey}`, newTxId)}>
+                <button onClick={() => handleUpdateRecord(recordKey === "@" ? "@" : `${recordKey}`, newTxId)}>
                   Update
                 </button>
               </label>

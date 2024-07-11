@@ -21,10 +21,22 @@ a:hover {
 .header {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; /* Distributes space between the nav and the button */
+  align-items: center;
   padding: 20px;
   background-color: #20232a;
   box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: white;
 }
 
 .connect-wallet {
@@ -33,7 +45,6 @@ a:hover {
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
-  margin-right: 20px; /* Add space to the right of the button */
   cursor: pointer;
   transition: background-color 0.3s;
 }
