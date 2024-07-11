@@ -42,8 +42,8 @@ function App() {
     setSearchTerm(e.target.value);
   };
 
-  const handleKeyClick = async (key) => {
-    const record = arnsRecords[key];
+  const handleKeyClick = async (name) => {
+    const record = arnsRecords.find((r) => r.name === name); 
     if (record && record.processId) {
       const { detailedRecords, owner, controllers } = await fetchRecordDetails(
         record.processId
@@ -133,7 +133,7 @@ function App() {
                   />
                 ) : (
                   <RecordsGrid
-                    keys={Object.keys(arnsRecords || {}).filter((key) =>
+                    keys={arnsRecords.map(r => r.name).filter((key) =>
                       key.toLowerCase().includes(searchTerm.toLowerCase())
                     )}
                     handleKeyClick={handleKeyClick}
