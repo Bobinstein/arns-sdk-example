@@ -24,7 +24,7 @@ function App() {
   const [controllers, setControllers] = useState([]); // State for controllers
   const [newSubdomain, setNewSubdomain] = useState(""); // State for new subdomain
   const [newTxId, setNewTxId] = useState(""); // State for new transaction ID
-  const [isProcessing, setIsProcessing] = useState(false); // State for processing indicator
+  const [isProcessing, setIsProcessing] = useState(true); // State for processing indicator
   const [resultMessage, setResultMessage] = useState(""); // State for result message
 
   // Fetch ArNS records when the component mounts
@@ -32,6 +32,7 @@ function App() {
     const fetchRecords = async () => {
       const allRecords = await fetchArNSRecords();
       setArnsRecords(allRecords);
+      setIsProcessing(false);
     };
 
     fetchRecords();

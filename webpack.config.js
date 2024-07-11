@@ -3,28 +3,25 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
     fallback: {
       fs: require.resolve('browserify-fs'), // not provided by NodePolyfillPlugin, so we need to provide it
-      "stream": require.resolve("stream-browserify"),
-      "crypto": require.resolve("crypto-browserify")
     },
   },
   module: {
-    rules: [
-      {
-        test: /\.(ts|tsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'ts-loader',
-        },
-      },
+    rules: [{
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader'
+                }
+            },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
