@@ -6,10 +6,28 @@ import { IO, ANT, ArconnectSigner } from "@ar.io/sdk/web";
  */
 export const fetchArNSRecords = async () => {
   const arIO = IO.init();
-  const allRecords = await arIO.getArNSRecords();
-  console.log(allRecords);
+  let allRecords = [];
+  let hasMore = true;
+  let cursor;
+
+  // Paginates through all records to get the full registry.
+  while (hasMore) {
+    const response = await arIO.getArNSRecords({
+      limit: 100, // You can adjust the limit as needed
+      sortBy: 'name',
+      sortOrder: 'asc',
+      cursor: cursor,
+    });
+
+    allRecords = [...allRecords, ...response.items];
+    cursor = response.nextCursor;
+    hasMore = response.hasMore;
+  }
+
+  // console.log(allRecords);
   return allRecords;
 };
+
 
 /**
  * Initialize ANT with the given processId.
