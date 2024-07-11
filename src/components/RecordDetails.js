@@ -35,14 +35,20 @@ const RecordDetails = ({
         {Object.keys(selectedRecord.records).map((recordKey, index) => (
           <div key={index} className="record-txid">
             <strong>{recordKey}:</strong>{" "}
-            <a href={`https://arweave.net/${selectedRecord.records[recordKey].transactionId}`} target="_blank" rel="noopener noreferrer">
+            <a
+              href={`https://arweave.net/${selectedRecord.records[recordKey].transactionId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {selectedRecord.records[recordKey].transactionId}
             </a>
           </div>
         ))}
       </div>
-      <p>Owner: {owner || 'N/A'}</p>
-      <p>Controllers: {controllers.length > 0 ? controllers.join(', ') : 'N/A'}</p>
+      <p>Owner: {owner || "N/A"}</p>
+      <p>
+        Controllers: {controllers.length > 0 ? controllers.join(", ") : "N/A"}
+      </p>
       {isAuthorized && (
         <>
           {Object.keys(selectedRecord.records).map((recordKey, index) => (
@@ -52,9 +58,21 @@ const RecordDetails = ({
                 <input
                   type="text"
                   placeholder="Enter new TxID"
-                  onBlur={(e) => handleUpdateRecord(recordKey === "@" ? selectedRecord.key : `${recordKey}`, e.target.value)}
+                  onBlur={(e) =>
+                    handleUpdateRecord(
+                      recordKey === "@" ? selectedRecord.key : `${recordKey}`,
+                      e.target.value
+                    )
+                  }
                 />
-                <button onClick={() => handleUpdateRecord(recordKey === "@" ? "@" : `${recordKey}`, newTxId)}>
+                <button
+                  onClick={() =>
+                    handleUpdateRecord(
+                      recordKey === "@" ? "@" : `${recordKey}`,
+                      newTxId
+                    )
+                  }
+                >
                   Update
                 </button>
               </label>
@@ -73,15 +91,15 @@ const RecordDetails = ({
               value={newTxId}
               onChange={(e) => setNewTxId(e.target.value)}
             />
-            <button onClick={() => handleUpdateRecord(`${newSubdomain}`, newTxId)}>
+            <button
+              onClick={() => handleUpdateRecord(`${newSubdomain}`, newTxId)}
+            >
               Set New Record
             </button>
           </div>
         </>
       )}
-      <button onClick={() => setSelectedRecord(null)}>
-        Back to list
-      </button>
+      <button onClick={() => setSelectedRecord(null)}>Back to list</button>
       {resultMessage && <p>{resultMessage}</p>}
     </div>
   );

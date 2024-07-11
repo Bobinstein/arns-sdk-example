@@ -7,7 +7,7 @@ import { IO, ANT, ArconnectSigner } from "@ar.io/sdk/web";
 export const fetchArNSRecords = async () => {
   const arIO = IO.init();
   const allRecords = await arIO.getArNSRecords();
-  console.log(allRecords)
+  console.log(allRecords);
   return allRecords;
 };
 
@@ -41,10 +41,19 @@ export const fetchRecordDetails = async (processId) => {
  * @param {number} ttlSeconds - The Time To Live (TTL) in seconds.
  * @returns {Promise<Object>} Result of the record update.
  */
-export const setANTRecord = async (processId, name, transactionId, ttlSeconds) => {
+export const setANTRecord = async (
+  processId,
+  name,
+  transactionId,
+  ttlSeconds
+) => {
   const browserSigner = new ArconnectSigner(window.arweaveWallet);
   const ant = ANT.init({ processId, signer: browserSigner });
-  const result = await ant.setRecord({ undername: name, transactionId, ttlSeconds });
-  console.log(result)
+  const result = await ant.setRecord({
+    undername: name,
+    transactionId,
+    ttlSeconds,
+  });
+  console.log(result);
   return result;
 };

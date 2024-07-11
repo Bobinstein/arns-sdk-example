@@ -44,7 +44,9 @@ function App() {
   const handleKeyClick = async (key) => {
     const record = arnsRecords[key];
     if (record && record.processId) {
-      const { detailedRecords, owner, controllers } = await fetchRecordDetails(record.processId);
+      const { detailedRecords, owner, controllers } = await fetchRecordDetails(
+        record.processId
+      );
       setSelectedRecord({
         key,
         records: detailedRecords,
@@ -69,7 +71,9 @@ function App() {
         900
       );
 
-      const { detailedRecords, owner, controllers } = await fetchRecordDetails(selectedRecord.processId);
+      const { detailedRecords, owner, controllers } = await fetchRecordDetails(
+        selectedRecord.processId
+      );
       setSelectedRecord({
         key: selectedRecord.key,
         records: detailedRecords,
@@ -91,48 +95,52 @@ function App() {
       <div className="App">
         <Header address={address} setAddress={setAddress} />
         <Routes>
-          <Route path="/" element={
-            <div className="records-container">
-              {!selectedRecord && (
-                <>
-                  <h2>ARNS Records Keys:</h2>
-                  <input
-                    type="text"
-                    placeholder="Filter records"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    className="search-bar"
+          <Route
+            path="/"
+            element={
+              <div className="records-container">
+                {!selectedRecord && (
+                  <>
+                    <h2>ARNS Records Keys:</h2>
+                    <input
+                      type="text"
+                      placeholder="Filter records"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      className="search-bar"
+                    />
+                  </>
+                )}
+                {isProcessing ? (
+                  <Spinner />
+                ) : selectedRecord ? (
+                  <RecordDetails
+                    selectedRecord={selectedRecord}
+                    owner={owner}
+                    controllers={controllers}
+                    isAuthorized={
+                      address &&
+                      (address === owner || controllers.includes(address))
+                    }
+                    handleUpdateRecord={handleUpdateRecord}
+                    newSubdomain={newSubdomain}
+                    newTxId={newTxId}
+                    setNewSubdomain={setNewSubdomain}
+                    setNewTxId={setNewTxId}
+                    resultMessage={resultMessage}
+                    setSelectedRecord={setSelectedRecord}
                   />
-                </>
-              )}
-              {isProcessing ? (
-                <Spinner />
-              ) : selectedRecord ? (
-                <RecordDetails
-                  selectedRecord={selectedRecord}
-                  owner={owner}
-                  controllers={controllers}
-                  isAuthorized={
-                    address && (address === owner || controllers.includes(address))
-                  }
-                  handleUpdateRecord={handleUpdateRecord}
-                  newSubdomain={newSubdomain}
-                  newTxId={newTxId}
-                  setNewSubdomain={setNewSubdomain}
-                  setNewTxId={setNewTxId}
-                  resultMessage={resultMessage}
-                  setSelectedRecord={setSelectedRecord}
-                />
-              ) : (
-                <RecordsGrid
-                  keys={Object.keys(arnsRecords || {}).filter((key) =>
-                    key.toLowerCase().includes(searchTerm.toLowerCase())
-                  )}
-                  handleKeyClick={handleKeyClick}
-                />
-              )}
-            </div>
-          } />
+                ) : (
+                  <RecordsGrid
+                    keys={Object.keys(arnsRecords || {}).filter((key) =>
+                      key.toLowerCase().includes(searchTerm.toLowerCase())
+                    )}
+                    handleKeyClick={handleKeyClick}
+                  />
+                )}
+              </div>
+            }
+          />
           <Route path="/about" element={<About />} />
         </Routes>
       </div>

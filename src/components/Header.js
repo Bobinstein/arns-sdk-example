@@ -22,7 +22,7 @@ const Header = ({ address, setAddress }) => {
     <div className="header">
       <Nav />
       <button className="connect-wallet" onClick={handleConnectWallet}>
-        {address ? `Connected: ${truncateAddress(address)}` : 'Connect Wallet'}
+        {address ? `Connected: ${truncateAddress(address)}` : "Connect Wallet"}
       </button>
     </div>
   );

@@ -10,7 +10,11 @@ const RecordsGrid = ({ keys, handleKeyClick }) => {
   return (
     <div className="records-grid">
       {keys.map((key, index) => (
-        <button key={index} className="record-key" onClick={() => handleKeyClick(key)}>
+        <button
+          key={index}
+          className="record-key"
+          onClick={() => handleKeyClick(key)}
+        >
           {key}
         </button>
       ))}
