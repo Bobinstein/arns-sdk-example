@@ -49,7 +49,7 @@ function App() {
         record.processId
       );
       setSelectedRecord({
-        key,
+        name,
         records: detailedRecords,
         processId: record.processId,
       });
