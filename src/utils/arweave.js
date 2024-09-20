@@ -13,7 +13,7 @@ export const fetchArNSRecords = async () => {
   // Paginates through all records to get the full registry.
   while (hasMore) {
     const response = await arIO.getArNSRecords({
-      limit: 100, // You can adjust the limit as needed
+      limit: 10000, // You can adjust the limit as needed
       sortBy: 'name',
       sortOrder: 'asc',
       cursor: cursor,
